@@ -9,7 +9,7 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: example
-      ENV_RECREATE: no
+      ENV_RECREATE: yes
     volumes:
        - db-data:/var/lib/postgresql/data
 
