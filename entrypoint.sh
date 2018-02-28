@@ -2,7 +2,7 @@
 
 echo 'hello, postgres'
 
-if [ "${ENV_RECREATE}" = "yes" ]; then
+if [ "${ENV_RECREATE}" = "true" ]; then
   echo 'hello, recreate db'
   dropdb postgres
   createdb postgres
