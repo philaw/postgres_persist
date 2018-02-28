@@ -1,0 +1,36 @@
+workspace:
+  base: /opt
+  path: postgres-data
+
+pipeline:
+
+  notify-build-started:
+    image: registry.airwallex.com/airwallex-buildbot:latest
+    channel: global-drone-builds
+    position: PreBuild 
+    author: ${DRONE_COMMIT_AUTHOR}
+    when:
+      status:  [ failure, success ]
+
+  postgres-data-container:
+    group: Containers
+    docker:
+    image: plugins/docker
+    pull: true
+    tags:
+      - latest
+      - ${DRONE_BUILD_NUMBER}
+      - ${DRONE_REPO_BRANCH/\//-}-${DRONE_BUILD_NUMBER}
+      - ${DRONE_REPO_BRANCH/\//-}
+    insecure: true
+    repo: registry.airwallex.com/postgres-data
+    registry: registry.airwallex.com
+    dockerfile: Dockerfile
+
+  notify-build-result:
+    image: registry.airwallex.com/airwallex-buildbot:latest
+    channel: global-drone-builds
+    position: PostBuild 
+    author: ${DRONE_COMMIT_AUTHOR}
+    when:
+      status:  [ failure, success ]
